@@ -1,0 +1,10 @@
+{
+  "type": "mysql",
+  "host": "localhost",
+  "username": "root",
+  "password": "",
+  "database": "assignment",
+  "entities": ["dist/**/entities/*{.ts,.js}"],
+  "migrations": ["dist/**/migrations/*{.d.ts,.js}"],
+  "logging": true
+}
