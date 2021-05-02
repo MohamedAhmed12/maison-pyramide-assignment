@@ -8,7 +8,14 @@ export class products1619955659945 implements MigrationInterface
         await queryRunner.createTable(
             new Table( {
                 name: "products",
-                columns: [ 
+                columns: [
+                    {
+                        name: "id",
+                        type: "int",
+                        isPrimary: true,
+                        isGenerated: true,
+                        generationStrategy: "increment"
+                    },
                     {
                         name: "name",
                         type: "varchar",
