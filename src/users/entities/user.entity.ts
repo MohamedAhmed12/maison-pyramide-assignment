@@ -27,4 +27,7 @@ export class User
   @Field()
   @Column( { type: 'timestamp', onUpdate: 'CURRENT_TIMESTAMP', nullable: true } )
   updated_at: Date;
+
+  @Field()
+  token: string;
 }

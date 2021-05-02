@@ -7,13 +7,14 @@ import { GraphQLError, GraphQLFormattedError } from "graphql";
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/entities/user.entity';
 import { from } from "rxjs";
+import { JwtModule } from '@nestjs/jwt';
+import { ProductsModule } from './products/products.module';
 
 @Module( {
   imports: [
     UsersModule,
     GraphQLModule.forRoot( {
       autoSchemaFile: 'schema.gql',
-      debug:true,
       formatError: ( error: GraphQLError ) =>
       {
         const graphQLFormattedError: GraphQLFormattedError = {
@@ -22,7 +23,14 @@ import { from } from "rxjs";
         return graphQLFormattedError;
       },
     } ),
-    TypeOrmModule.forRoot()
+    TypeOrmModule.forRoot(),
+    JwtModule.register({
+      secret: "secretkey123@#",
+      signOptions: {
+        expiresIn: 360000,
+      },
+    }),
+    ProductsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

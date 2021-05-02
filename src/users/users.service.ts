@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { AuthCredentialsInput } from './dto/auth-credentials.input';
+import { AuthCredentialsInput } from "./dto/auth-credentials.input";
 import { UpdateUserInput } from './dto/update-user.input';
 import { User } from "./entities/user.entity";
 import { UserRepository } from "./repositories/user.repository";
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UsersService
@@ -12,6 +13,7 @@ export class UsersService
   constructor (
     @InjectRepository( UserRepository )
     private readonly userRepository: UserRepository,
+    private readonly jwtService: JwtService,
   ) { }
 
   async register( AuthCredentialsInput: AuthCredentialsInput )
@@ -19,9 +21,12 @@ export class UsersService
     return await this.userRepository.register( AuthCredentialsInput );
   }
 
-  findAll()
+  async login( AuthCredentialsInput: AuthCredentialsInput )
   {
-    return `This action returns all users`;
+    let user = await this.userRepository.login( AuthCredentialsInput );
+    const payload = { username: user.name, sub: user.id };
+    
+    return { token: this.jwtService.sign( payload ), ...user };
   }
 
   findOne( id: number )
