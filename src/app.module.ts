@@ -5,10 +5,9 @@ import { UsersModule } from './users/users.module';
 import { GraphQLModule, } from "@nestjs/graphql";
 import { GraphQLError, GraphQLFormattedError } from "graphql";
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './users/entities/user.entity';
-import { from } from "rxjs";
 import { JwtModule } from '@nestjs/jwt';
 import { ProductsModule } from './products/products.module';
+import { JwtStrategy } from "./users/jwt.strategy";
 
 @Module( {
   imports: [
@@ -22,17 +21,22 @@ import { ProductsModule } from './products/products.module';
         };
         return graphQLFormattedError;
       },
+      context: ( { req } ) => ( { req } ),
+      debug: true,
     } ),
     TypeOrmModule.forRoot(),
-    JwtModule.register({
+    JwtModule.register( {
       secret: "secretkey123@#",
       signOptions: {
         expiresIn: 360000,
       },
-    }),
+    } ),
     ProductsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    JwtStrategy,
+    AppService
+  ],
 } )
 export class AppModule { }

@@ -24,13 +24,12 @@ export class UsersService
   {
     let user = await this.userRepository.login( AuthCredentialsInput );
     const payload = { username: user.name, sub: user.id };
-    
+
     return { token: this.jwtService.sign( payload ), ...user };
   }
 
-  findOne( id: number )
+  async findOne( id: number )
   {
-    return `This action returns a #${ id } user`;
+    return await this.userRepository.findOneOrFail( id );
   }
-
 }

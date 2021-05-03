@@ -1,7 +1,19 @@
-import { InputType, Int, Field } from '@nestjs/graphql';
+import { InputType, Field, Int } from '@nestjs/graphql';
+import { IsInt, IsPositive, IsString } from 'class-validator';
 
 @InputType()
 export class CreateProductInput {
-  @Field(() => Int, { description: 'Example field (placeholder)' })
-  exampleField: number;
+  @Field()
+  @IsString()
+  readonly name?: string
+
+  @Field(() => Int)
+  @IsInt()
+  @IsPositive()
+  readonly price: number
+
+  @Field()
+  @IsInt()
+  @IsPositive()
+  user_id: number
 }

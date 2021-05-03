@@ -1,7 +1,10 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { UsersService } from './users.service';
 import { User } from './entities/user.entity';
 import { AuthCredentialsInput } from './dto/auth-credentials.input';
+import { UseGuards } from '@nestjs/common';
+import { GrahQLAuthGuard } from "./guards/graphQLAuth.guard";
+import { CurrentUser } from "./decoratories/currentUser.decorator";
 
 @Resolver( () => User )
 export class UsersResolver
@@ -11,7 +14,7 @@ export class UsersResolver
   @Mutation( () => User )
   async register( @Args( 'AuthCredentialsInput' ) AuthCredentialsInput: AuthCredentialsInput )
   {
-   return await this.usersService.register( AuthCredentialsInput );
+    return await this.usersService.register( AuthCredentialsInput );
   }
 
   @Mutation( () => User )
@@ -21,8 +24,9 @@ export class UsersResolver
   }
 
   @Query( () => User, { name: 'user' } )
-  findOne( @Args( 'id', { type: () => Int } ) id: number )
+  @UseGuards( GrahQLAuthGuard )
+  findOne( @CurrentUser() currentUser: User)
   {
-    return this.usersService.findOne( id );
+    return this.usersService.findOne( currentUser.id );
   }
 }

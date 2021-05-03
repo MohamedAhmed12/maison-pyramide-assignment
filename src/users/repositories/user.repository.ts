@@ -3,12 +3,11 @@ import { User } from "../entities/user.entity";
 import { AuthCredentialsInput } from "../dto/auth-credentials.input";
 import { compareSync, genSalt, hash } from "bcryptjs";
 import { NotFoundException, UnauthorizedException } from "@nestjs/common";
-import { authenticate } from "passport";
 @EntityRepository( User )
 export class UserRepository extends Repository<User> {
-  async register( AuthCredentialsInput: AuthCredentialsInput ): Promise<User>
+  async register( authCredentialsInput: AuthCredentialsInput ): Promise<User>
   {
-    const { name, email, password, password_confirmation } = AuthCredentialsInput;
+    const { name, email, password, password_confirmation } = authCredentialsInput;
     if ( password !== password_confirmation )
     {
       throw new NotFoundException( "Password and password_confirmation should match" );
@@ -23,9 +22,9 @@ export class UserRepository extends Repository<User> {
       );
     }
 
-    AuthCredentialsInput.password = await this.hash( AuthCredentialsInput.password );
+    authCredentialsInput.password = await this.hash( authCredentialsInput.password );
 
-    let user = this.create( AuthCredentialsInput );
+    let user = this.create( authCredentialsInput );
 
     return this.save( user );
   }

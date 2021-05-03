@@ -25,8 +25,8 @@ export class products1619955659945 implements MigrationInterface
                         type: "int",
                     },
                     {
-                        name: "seller",
-                        type: "varchar",
+                        name: "user_id",
+                        type: "int",
                     },
                     {
                         name: "created_at",
