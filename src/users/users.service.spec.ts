@@ -51,6 +51,21 @@ describe( 'UsersService', () =>
       expect( userService ).toBeDefined();
     } );
 
-   
+    it( 'call register from repository', async () =>
+    {
+      userRepository.register.mockResolvedValue( 'someValue' );
+
+      expect( userRepository.register ).not.toHaveBeenCalled();
+      let user: AuthCredentialsInput = {
+        name: 'Mohamed',
+        email: 'mohamed@gmail.com',
+        password: '123456789',
+        password_confirmation: '123456789'
+      }
+      let result = await userService.register( user );
+      expect( userRepository.register ).toHaveBeenCalled();
+      
+      expect( result ).toEqual('someValue');
+    } );
   } );
 } );
