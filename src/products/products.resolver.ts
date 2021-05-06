@@ -21,15 +21,15 @@ export class ProductsResolver
 
   @Query( () => [Product], { name: 'products' } )
   @UseGuards( GrahQLAuthGuard )
-  findAll()
+  async findAll(@Args('seller_id', {nullable: true}) seller_id?: number)
   {
-    return this.productsService.findAll();
+    return this.productsService.findAll(seller_id);
   }
 
   @Query( () => [Product], { name: 'myProducts' } )
   @UseGuards( GrahQLAuthGuard )
   async findMine( @CurrentUser() currentUser: User )
   {
-    return this.productsService.findMine(currentUser);
+    return this.productsService.findMine( currentUser );
   }
 }

@@ -13,7 +13,7 @@ type User {
   id: ID
   name: String!
   email: String!
-  products: Product
+  products: [Product!]
   token: String!
   created_at: DateTime!
   updated_at: DateTime!
@@ -26,7 +26,7 @@ scalar DateTime
 
 type Query {
   user: User!
-  products: [Product!]!
+  products(seller_id: Float): [Product!]!
   myProducts: [Product!]!
 }
 
@@ -46,5 +46,5 @@ input AuthCredentialsInput {
 input CreateProductInput {
   name: String!
   price: Int!
-  user_id: Float!
+  user_id: Int!
 }

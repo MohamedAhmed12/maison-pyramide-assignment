@@ -21,9 +21,9 @@ export class User
   @Column()
   password: string;
 
-  @Field( () => Product, { nullable: true } )
+  @Field( () => [Product], { nullable: true } )
   @OneToMany( () => Product, product => product.seller )
-  products: Product[];
+  products?: Product[];
 
   @Field()
   token: string;

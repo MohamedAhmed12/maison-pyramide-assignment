@@ -14,12 +14,27 @@ export class ProductsService
 
   async create( createProductInput: CreateProductInput )
   {
-    return this.productsRepository.createProduct(createProductInput);
+    return this.productsRepository.createProduct( createProductInput );
   }
 
-  findAll()
+  async findAll( seller_id?: number )
   {
-    return this.productsRepository.find();
+    if ( !seller_id )
+    {
+      return this.productsRepository.find( {
+        order: {
+          price: "ASC"
+        }
+      } );
+    }
+    return this.productsRepository.find( {
+      where:{
+        user_id: seller_id
+      },
+      order: {
+        price: "ASC"
+      }
+    } );
   }
 
   async findMine( currentUser )

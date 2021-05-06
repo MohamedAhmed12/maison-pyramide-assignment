@@ -19,8 +19,11 @@ export class Product
   price: number;
 
   @Field( () => User )
-  @ManyToOne( () => User, seller => seller.products )
-  @JoinColumn( { name: "user_id" } )
+  @ManyToOne(
+    () => User,
+    ( user: User ) => user.products,
+    { onUpdate: 'CASCADE', onDelete: 'CASCADE' }
+  )  @JoinColumn( { name: "user_id" } )
   seller: User;
 
   @Column()

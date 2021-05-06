@@ -12,7 +12,7 @@ export class CreateProductInput {
   @IsPositive()
   readonly price: number
 
-  @Field()
+  @Field(() => Int)
   @IsInt()
   @IsPositive()
   user_id: number
